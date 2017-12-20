@@ -211,6 +211,30 @@ fasta3<-c()
 		
 write.table(fasta3, file=outfile, row.names=F, col.names=F, quote=F)
 
+copref<-read.delim(cop_path, sep="\t", header=T,comment.char = "#")	
+nam<-c()
+for(i in 1:nrow(coor)){
+	tnam<-grep(gsub("\\..*","",coor[i,"fin"]),copref[,1])
+	nam<-c(nam,as.character(copref[tnam,2]))
+	
+	
+}
+
+nam2<-c()
+for(i in 1:length(nam)){
+	temp1<-substr(nam[i],1,3)
+	temp2<-strsplit(nam[i],"_")[[1]]
+	temp1<-paste(temp1,"_",temp2[2], sep="")
+	if(length(temp2)>2){
+		temp1<-paste(temp1, temp2[length(temp2)], sep="_")
+	}
+	nam2<-c(nam2,temp1)
+}
+nam2<-paste(nam2,coor[temp,"fin"], sep="_")
+
+coor<-cbind(coor,nam2)
+
+
 save(coor, file="full_GLASSgo_table.Rdata")
 
 
