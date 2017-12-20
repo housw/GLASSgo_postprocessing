@@ -1,16 +1,29 @@
 
 
-
+# author Jens Georg
 # The script extracts all sequences which are available for CopraRNA and writes them in a fasta file
 # Dependencies: "taxid_to_refseq" and "CopraRNA_available_organisms.txt"
 
-#call: 
+#call: R --slave -f  ../GLASSgo_2_copraRNA_fasta_generation.r --args filename=4083138.result refpath=taxid_to_refseq cop_path=copra_refseq_positivelist.txt outfile=coprarna_candidates.txt
 
+
+args <- commandArgs(trailingOnly = TRUE)
 
 refpath<-"taxid_to_refseq"
 cop_path<-"CopraRNA_available_organisms.txt"
 filename<-"4083138.result"
 outfile<-"coprarna_candidates.txt"
+
+ for(i in 1:length(args)){
+	temp<-strsplit(args[i],"=")
+	temp<-temp[[1]]
+	temp1<-temp[1]
+	temp2<-temp[2]
+	assign(as.character(temp1),temp2)
+ }
+
+
+
 
 to_refseq2<-function(result){
 		load(refpath)
