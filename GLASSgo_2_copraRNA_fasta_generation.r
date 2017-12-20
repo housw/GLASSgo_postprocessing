@@ -4,7 +4,7 @@
 # The script extracts all sequences which are available for CopraRNA and writes them in a fasta file
 # Dependencies: "taxid_to_refseq" and "CopraRNA_available_organisms.txt"
 
-#call: R --slave -f  ../GLASSgo_2_copraRNA_fasta_generation.r --args filename=4083138.result refpath=taxid_to_refseq cop_path=copra_refseq_positivelist.txt outfile=coprarna_candidates.txt
+#call: R --slave -f  GLASSgo_2_copraRNA_fasta_generation.r --args filename=4083138.result refpath=taxid_to_refseq cop_path=copra_refseq_positivelist.txt outfile=coprarna_candidates.txt
 
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -211,6 +211,6 @@ fasta3<-c()
 		
 write.table(fasta3, file=outfile, row.names=F, col.names=F, quote=F)
 
-
+save(coor, file="full_GLASSgo_table.Rdata")
 
 
