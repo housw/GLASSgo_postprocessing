@@ -230,7 +230,7 @@ for(i in 1:length(nam)){
 	}
 	nam2<-c(nam2,temp1)
 }
-nam2<-paste(nam2,coor[temp,"fin"], sep="_")
+nam2<-paste(nam2,coor[,"fin"], sep="_")
 
 coor<-cbind(coor,nam2)
 
