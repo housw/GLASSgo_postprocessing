@@ -1,40 +1,16 @@
 
 # author Jens Georg
-# The script removes pre-selected_organisms from a fasta file based on their Refseq ID
 # removes 100% identical sequences and keeps pre-selected organsisms based on their Refseq ID
 # 
 
 #call: R --slave -f  GLASSgo_2_copraRNA_fasta_generation.r --args filename=4083138.result refpath=taxid_to_refseq cop_path=copra_refseq_positivelist.txt outfile=coprarna_candidates.txt
 
 filename<-"coprarna_candidates.txt"
-exclude<-c("NZ_CP009781.1","NZ_LN681227.1")
 datapath<-"full_GLASSgo_table.Rdata"
 wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
 ooi<-"NC_000913"
 
 load(datapath)
-
-temp<-coor
-
-if(length(exclude)>0){
-	temp_ex<-c()
-	for(i in 1:length(exclude)){
-		temp_ex1<-grep(exclude[i], coor[,"fin"])
-		if(length(temp_ex1)>0){
-			temp_ex<-c(temp_ex,temp_ex1)
-		}
-	}
-	if(length(temp_ex)>0){
-	
-	temp<-temp[-temp_ex,]
-	}
-}
-
-
-coor<-temp
-
-
-
 
 wildcard<-unique(c(ooi,wildcard))
 pre<-c()
