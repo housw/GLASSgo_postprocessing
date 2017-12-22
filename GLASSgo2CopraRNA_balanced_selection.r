@@ -139,6 +139,7 @@ if(nrow(coor2)>max_number){
 		fasta<-c(fasta, as.character(coor[out[i],"sequence"]))
 	}
 	nam<-paste(outfile_prefix,"CopraRNA_input_balanced.fasta", sep="_" )
+	fasta<-gsub("\\..*","",fasta)
 	write.table(fasta, file=nam, row.names=F, col.names=F, quote=F)
 }
 
