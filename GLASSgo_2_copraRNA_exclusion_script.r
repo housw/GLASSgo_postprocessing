@@ -200,6 +200,7 @@ fasta_unique<-fasta3 # unique CopraRNA "positive" sequences
 write.table(fasta_unique, file="un_fasta", row.names=F, col.names=F, quote=F)
 
 	
-	
+coor2<-coor[temp,]
+save(coor2, file="refined_GLASSgo_table.Rdata")
 	
 	
