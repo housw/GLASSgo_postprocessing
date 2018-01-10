@@ -87,7 +87,7 @@ export_ncRNA_coordinates<-function(x){ # x = copy pasted text from GLASSgo fasta
   y<-gsub("complete genome","",y)
   y<-gsub("chromosome","",y)
   x<-gsub(".*\\|[:ABCDEFGHIJKLMNOPQRSTUVWXYZ:]*[:0123456789:]*\\:","",x)
-  x<-gsub(".*\\:","",x)
+  x<-gsub(".*\\|\\:","",x)
   x<-gsub(" .*","", x)
   out<-matrix(,length(x),6)
   colnames(out)<-c("Strand","start","end","name","Full_header","sequence")
