@@ -141,7 +141,7 @@ if(nrow(coor2)>max_number){
 	nam<-paste(outfile_prefix,"CopraRNA_input_balanced.fasta", sep="_" )
 	fasta<-gsub("\\..*","",fasta)
 	write.table(fasta, file=nam, row.names=F, col.names=F, quote=F)
-}
+
 
 dis<-clustalo3(coor2, seq(1,nrow(coor2)))
 dis<-as.dist(dis)
@@ -169,4 +169,4 @@ legend("bottom",  inset=c(-0.05),bty="n", legend=c("organism of interst (ooi)","
 par(xpd=FALSE)
 dev.off()
 
-
+}
