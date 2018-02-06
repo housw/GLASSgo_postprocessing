@@ -2,12 +2,12 @@
 # selects candidates for copraRNA based on a phylogenetic tree of the input sRNAs
 # 
 
-#call: R --slave -f  GLASSgo2CopraRNA_balanced_selection.r --args wildcard=NC_000913,NC_000911 exclude=NZ_CP009781.1,NZ_LN681227.1 max_number=20 outfile_prefix=sRNA ooi=NC_000913
+#call: R --slave -f  GLASSgo2CopraRNA_balanced_selection.r --args wildcard=NC_000913,NC_000911,NC_003197 exclude=NZ_CP009781.1,NZ_LN681227.1 max_number=20 outfile_prefix=sRNA ooi=NC_000913
 
 args <- commandArgs(trailingOnly = TRUE)
 
 ooi<-"NC_000913"
-wildcard<-wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
+wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
 max_number<-30
 outfile_prefix<-"sRNA"
 exclude<-c("NZ_CP009781.1","NZ_LN681227.1")
@@ -126,47 +126,51 @@ if(nrow(coor2)>max_number){
 	
 	out<-c()
 	for(i in 1:length(clus2)){
-			temp<-clus2[[i]]
-		wil<-na.omit(match(cop_pre,names(temp)))
-		temp2<-sample(length(temp),1)
-		out<-c(out, names(temp)[temp2])
+		temp<-clus2[[i]]
+		temp_ooi<-grep(ooi,names(temp))
+		if(length(temp_ooi)==0){
+			temp2<-sample(length(temp),1)
+			out<-c(out, names(temp)[temp2])
+		}
 	}
 	out<-c(coor2[wild,"fin"],out)
 	out<-match(out,coor2[,"fin"])
 	fasta<-c()
 	for(i in 1:length(out)){
-		fasta<-c(fasta, paste(">",coor[out[i],"fin"],sep=""))
-		fasta<-c(fasta, as.character(coor[out[i],"sequence"]))
+		fasta<-c(fasta, paste(">",coor2[out[i],"fin"],sep=""))
+		fasta<-c(fasta, as.character(coor2[out[i],"sequence"]))
 	}
 	nam<-paste(outfile_prefix,"CopraRNA_input_balanced.fasta", sep="_" )
 	fasta<-gsub("\\..*","",fasta)
 	write.table(fasta, file=nam, row.names=F, col.names=F, quote=F)
 
 
-dis<-clustalo3(coor2, seq(1,nrow(coor2)))
-dis<-as.dist(dis)
-clus<-(hclust(dis,method="average"))
-clus<-as.phylo(clus)
-lab<-clus$tip.label
+	dis<-clustalo3(coor2, seq(1,nrow(coor2)))
+	dis<-as.dist(dis)
+	clus<-(hclust(dis,method="average"))
+	clus<-as.phylo(clus)
+	lab<-clus$tip.label
 
-nam_selected<-match(coor2[out,"fin"],lab)
-nam_wildcard<-match(coor2[wild,"fin"],lab)
-nam_ooi<-match(coor2[wild[1],"fin"],lab)
+	nam_selected<-match(coor2[out,"fin"],lab)
+	nam_wildcard<-match(coor2[wild,"fin"],lab)
+	nam_ooi<-match(coor2[wild[1],"fin"],lab)
 
-lab<-match(lab,coor2[,"fin"])
-lab<-coor2[lab,"nam2"]
-clus$tip.label<-lab
-nam<-paste(outfile_prefix,"tree_coprarna_candidates_balanced.pdf", sep="_" )
-pdf(nam)
-colo<-rep("1",length(lab))
-colo[nam_selected]<-"dodgerblue1"
-colo[nam_wildcard]<-"olivedrab2"
-colo[nam_ooi]<-"purple1"
-par(mar=c(3, 1, 1, 1), xpd=TRUE)
-plot(clus,tip.color=colo, cex=0.5 )
+	lab<-match(lab,coor2[,"fin"])
+	lab<-coor2[lab,"nam2"]
+	clus$tip.label<-lab
+	nam<-paste(outfile_prefix,"tree_coprarna_candidates_balanced.pdf", sep="_" )
+	pdf(nam)
+	colo<-rep("1",length(lab))
+	colo[nam_selected]<-"dodgerblue1"
+	colo[nam_wildcard]<-"olivedrab2"
+	colo[nam_ooi]<-"purple1"
+	par(mar=c(3, 1, 1, 1), xpd=TRUE)
+	plot(clus,tip.color=colo, cex=0.5 )
 
-legend("bottom",  inset=c(-0.05),bty="n", legend=c("organism of interst (ooi)","pre-selected organisms","selected organisms"), text.col=c("purple1","olivedrab2","dodgerblue1"),cex=0.6)
-par(xpd=FALSE)
-dev.off()
+	legend("bottom",  inset=c(-0.05),bty="n", legend=c("organism of interst (ooi)","pre-selected organisms","selected organisms"), text.col=c("purple1","olivedrab2","dodgerblue1"),cex=0.6)
+	par(xpd=FALSE)
+	dev.off()
 
 }
+
+unlink("Rplots.pdf")
