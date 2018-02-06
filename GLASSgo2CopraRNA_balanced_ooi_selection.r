@@ -193,6 +193,7 @@ if(nrow(coor2)>max_number){
 	sel<-unique(c(sel,names(close_orgs)))
 
 	}
+	out_old<-out
 	out<-c(coor2[pos_wild,"fin"],sel,out)
 	out<-match(out,coor2[,"fin"])
 	fasta<-c()
@@ -209,7 +210,7 @@ if(nrow(coor2)>max_number){
 	clus<-as.phylo(clus)
 	lab<-clus$tip.label
 
-	nam_selected<-match(coor2[out,"fin"],lab)
+	nam_selected<-match(coor2[out_old,"fin"],lab)
 	nam_wildcard<-match(coor2[pos_wild,"fin"],lab)
 	nam_neighbourhood<-match(sel,lab)
 	nam_ooi<-grep(ooi,lab)
