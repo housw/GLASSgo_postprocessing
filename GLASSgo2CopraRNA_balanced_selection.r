@@ -57,7 +57,7 @@ clustalo3<-function(coor, positions){
 		fasta<-c(fasta, paste(">",coor[positions[i],"fin"],sep=""))
 		fasta<-c(fasta, as.character(coor[positions[i],"sequence"]))
 	}
-	write.table(fasta_unique, file="temp_fasta", row.names=F, col.names=F, quote=F)
+	write.table(fasta, file="temp_fasta", row.names=F, col.names=F, quote=F)
 	wd<-getwd()
 	command<-paste("clustalo -i ", "temp_fasta", " --distmat-out=distmatout.txt --full --output-order=input-order --use-kimura --force --max-hmm-iterations=-1", sep="")
 	system(command)
@@ -80,7 +80,7 @@ clustalo4<-function(coor, positions){
 		fasta<-c(fasta, paste(">",coor[positions[i],"fin"],sep=""))
 		fasta<-c(fasta, as.character(coor[positions[i],"sequence"]))
 	}
-	write.table(fasta_unique, file="temp_fasta", row.names=F, col.names=F, quote=F)
+	write.table(fasta, file="temp_fasta", row.names=F, col.names=F, quote=F)
 	command<-paste("clustalo -i ", "temp_fasta", " --distmat-out=distmatout.txt --full --percent-id --output-order=input-order --force --max-hmm-iterations=-1", sep="")
 	system(command)
 	na<-grep(">", fasta3)
