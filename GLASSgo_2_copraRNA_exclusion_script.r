@@ -59,7 +59,7 @@ clustalo2<-function(coor){
 	#na<-c("query",coor[,1])
 	temp<-read.delim("distmatout.txt",sep="",header=F, , skip=1)
 	unlink("distmatout.txt")
-	#temp<-temp[,2:ncol(temp)]
+	temp<-temp[,2:ncol(temp)]
 	colnames(temp)<-na
 	rownames(temp)<-na
 	temp
