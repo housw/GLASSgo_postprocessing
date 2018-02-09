@@ -97,7 +97,7 @@ if(nrow(coor2)<max_number){
 	ooi_pos<-grep(ooi, coor2[,"fin"])
 	fasta<-c()
 	if(length(ooi_pos)>0){
-		fasta<-c(paste(">",gsub("\\.*","",as.character(coor2[ooi_pos,"fin"])),sep="")),as.character(coor2[ooi_pos,"sequence"]))
+		fasta<-c(paste(">",gsub("\\.*","",as.character(coor2[ooi_pos,"fin"])),sep=""),as.character(coor2[ooi_pos,"sequence"]))
 		coor2<-coor2[-ooi_pos,]
 	}
 	
