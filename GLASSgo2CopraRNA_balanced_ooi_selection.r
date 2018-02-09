@@ -6,11 +6,12 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 
-ooi<-"NC_000913"
-wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
-max_number<-15
+ooi<-"NZ_CP018205"
+# Staphylococcus aureus, epidermidis, lugdunensis,  warneri,      capitis,    pseudintermedius, saprophyticus
+wildcard<-c("NC_007795", "NC_004461", "NC_013893", "NC_020164", "NZ_CP007601", "NC_014925", "NC_007350")
+max_number<-20
 outfile_prefix<-"sRNA"
-exclude<-c("NZ_CP009781.1","NZ_LN681227.1")
+exclude<-c()
 sim<-3
 
 for(i in 1:length(args)){
@@ -63,7 +64,7 @@ clustalo3<-function(coor, positions){
 	system(command)
 	na<-grep(">", fasta)
 	na<-gsub(">","",fasta[na])
-	temp<-read.delim("distmatout.txt",sep="",header=F, , skip=1)
+	temp<-read.delim("distmatout.txt",sep="",header=F, skip=1)
 	unlink("distmatout.txt")
 	unlink("temp_fasta")
 	temp<-temp[,2:ncol(temp)]
@@ -85,7 +86,7 @@ clustalo4<-function(coor, positions){
 	system(command)
 	na<-grep(">", fasta)
 	na<-gsub(">","",fasta[na])
-	temp<-read.delim("distmatout.txt",sep="",header=F, , skip=1)
+	temp<-read.delim("distmatout.txt",sep="",header=F, skip=1)
 	unlink("distmatout.txt")
 	temp<-temp[,2:ncol(temp)]
 	colnames(temp)<-na
@@ -98,9 +99,8 @@ if(nrow(coor2)<max_number){
 	fasta<-c()
 	if(length(ooi_pos)>0){
 		fasta<-c(paste(">",as.character(coor2[ooi_pos,"fin"],sep="")),as.character(coor2[ooi_pos,"sequence"]))
-		coor2<-coor2[-ooi_pos]
+		coor2<-coor2[-ooi_pos,]
 	}
-	
 	for(i in 1:nrow(coor2)){
 		fasta<-c(fasta, paste(">",coor2[i,"fin"],sep=""))
 		fasta<-c(fasta, as.character(coor2[i,"sequence"]))
@@ -241,3 +241,4 @@ if(nrow(coor2)>max_number){
 }
 
 unlink("Rplots.pdf")
+
