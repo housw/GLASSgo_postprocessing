@@ -7,7 +7,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 ooi<-"NC_000913"
-wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
+wildcard<-c("NC_000913","NC_000911","NC_003197","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
 max_number<-35
 outfile_prefix<-"sRNA"
 exclude<-c("NZ_CP009781.1","NZ_LN681227.1")
