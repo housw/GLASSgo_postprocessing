@@ -390,7 +390,7 @@ generate_feattable_fetch<-function(idvect,featpath=FALSE){
 	require(seqinr)
 	for(i in 1:length(idvect)){
 		print(paste(i,"/",length(idvect)))
-		gen <- entrez_fetch(db="nucleotide", id=idvect[i],rettype="gbwithparts",retmode="xml")
+		gen <- entrez_fetch(db="nucleotide", id=idvect[i],rettype="gb",retmode="text")
 		write.table(gen, file=as.character(idvect[i]), sep="\t", quote=FALSE, row.names=F, col.names=F)
 		generate_feattable(idvect[i], featpath=featpath)
 		unlink(idvect[i])
