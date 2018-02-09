@@ -94,7 +94,13 @@ clustalo4<-function(coor, positions){
 }
 
 if(nrow(coor2)<max_number){
+	ooi_pos<-grep(ooi, coor2[,"fin"]
 	fasta<-c()
+	if(length(ooi_pos)>0){
+		fasta<-c(paste(">",as.character(coor2[ooi_pos,"fin"],sep="")),as.character(coor2[ooi_pos,"sequence"]))
+		coor2<-coor2[-ooi_pos]
+	}
+	
 	for(i in 1:nrow(coor2)){
 		fasta<-c(fasta, paste(">",coor2[i,"fin"],sep=""))
 		fasta<-c(fasta, as.character(coor2[i,"sequence"]))
@@ -102,6 +108,7 @@ if(nrow(coor2)<max_number){
 	nam<-paste(outfile_prefix,"CopraRNA_input_balanced.fasta", sep="_" )
 	write.table(fasta, file=nam, row.names=F, col.names=F, quote=F)
 }
+
 
 if(nrow(coor2)>max_number){
 	wildcard<-unique(c(ooi,wildcard))
