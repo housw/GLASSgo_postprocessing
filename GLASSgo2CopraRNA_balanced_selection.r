@@ -98,7 +98,7 @@ if(nrow(coor2)<max_number){
 	fasta<-c()
 	if(length(ooi_pos)>0){
 		fasta<-c(paste(">",as.character(coor2[ooi_pos,"fin"],sep="")),as.character(coor2[ooi_pos,"sequence"]))
-		coor2<-coor2[-ooi_pos]
+		coor2<-coor2[-ooi_pos,]
 	}
 	
 	for(i in 1:nrow(coor2)){
