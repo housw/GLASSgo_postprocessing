@@ -122,7 +122,7 @@ if(nrow(coor2)>max_number){
 	sim<-sim-length(pos_wild)
 	
 	
-	max_number2<-max_number-sim-length(pos_wild)+1
+	max_number2<-max_number-sim-length(pos_wild)
 	pos<-seq(1,nrow(coor2))
 	if(length(pos_wild)>0){
 		pos<-pos[-pos_wild]
@@ -133,7 +133,7 @@ if(nrow(coor2)>max_number){
 	dis<-as.dist(dis)
 	clus<-(hclust(dis,method="average"))
 	plot(clus)
-	knum<-min(max_number2,length(clus$labels)-1)
+	knum<-min(max_number2,length(clus$tip.label)-1)
 	if(knum<2){
 		knum<-2
 	}
