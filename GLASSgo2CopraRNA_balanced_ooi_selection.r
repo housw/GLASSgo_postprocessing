@@ -119,7 +119,7 @@ if(nrow(coor2)>max_number){
 		pos_wild<-c(pos_wild,grep(wildcard[i],coor2[,"fin"])[1])
 	}
 	pos_wild<-unique(na.omit(pos_wild))
-	
+	sim<-sim-length(pos_wild)
 	
 	
 	max_number2<-max_number-sim-length(pos_wild)+1
