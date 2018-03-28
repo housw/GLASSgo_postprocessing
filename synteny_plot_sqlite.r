@@ -179,6 +179,7 @@ require(seqinr)
 
 
 
+
 generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
 	wd<-getwd()
 	if(featpath==FALSE){
@@ -320,18 +321,26 @@ generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
         if(featpath!=FALSE){
 			#setwd(featpath)
 			#dir.create("feattables")
-			di<-paste(featpath,"/",name1, sep="")
-			print(di)
+			di<-featpath
 		}
         if(featpath==FALSE){
-			di<-paste(wd,"/feattables/",name1, sep="")
-			print(di)
+			di<-featpath
 		}
 
 
 		nas1<-which(is.na(feat[[1]][,5]))
 		feat[[1]][nas1,5]<-paste("orf_",seq(1,length(nas1)),sep="")
-        save(feat, file=di)
+        con <- dbConnect(SQLite(), dbname=di, ":memory:")
+		temp<-feat[[1]]
+		temp<-as.data.frame(temp)
+        if(temp[1,1]!="no_info"){
+			print(i)
+			temp[,2]<-as.numeric(as.character(temp[,2]))
+			temp[,3]<-as.numeric(as.character(temp[,3]))
+		}
+		dbWriteTable(con, name1, overwrite=T, temp)
+		dbDisconnect(con)
+	   #save(feat, file=di)
 		if(genomepath!=FALSE){
 			#setwd(genomepath)
 		}
@@ -444,6 +453,7 @@ generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
 		feat[[1]][nas1,5]<-paste("orf_",seq(1,length(nas1)),sep="")
          con <- dbConnect(SQLite(), dbname=di, ":memory:")
 		temp<-feat[[1]]
+		temp<-as.data.frame(temp)
         if(temp[1,1]!="no_info"){
 		print(i)
 		temp[,2]<-as.numeric(as.character(temp[,2]))
@@ -482,6 +492,7 @@ generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
 		
 		 con <- dbConnect(SQLite(), dbname=di, ":memory:")
 		temp<-feat[[1]]
+		temp<-as.data.frame(temp)
         if(temp[1,1]!="no_info"){
 		print(i)
 		temp[,2]<-as.numeric(as.character(temp[,2]))
@@ -500,6 +511,7 @@ generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
 	}
 	setwd(wd)
 }
+
 
 generate_feattable_fetch<-function(idvect,featpath=FALSE){
 	#wd<-getwd()
