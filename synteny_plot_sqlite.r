@@ -99,16 +99,16 @@ require(seqinr)
 	
 	temp<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE rowid = 1 ",sep="")
 	
-	
+
 	
    temp<-dbGetQuery(con,temp)
    if(temp[1,1]!="no_info"){
    
    temp<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE start >= ", max(0,(s-windo))," AND end <= ",(e+windo) ,sep="")
 	temp<-dbGetQuery(con,temp)
-	temp2<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE start >= ", max(0,(s-windo))," AND end <= ",(e+windo) ,sep="")
+	temp2<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE start <= ", max(0,(s-windo))," AND end >= ",(e-windo) ,sep="")
 	temp2<-dbGetQuery(con,temp2)
-	temp3<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE start >= ", max(0,(s-windo))," AND end <= ",(e+windo) ,sep="")
+	temp3<-paste("SELECT * FROM ","'",coor[i,1],"'"," WHERE start <= ", max(0,(s+windo))," AND end >= ",(e+windo) ,sep="")
 	temp3<-dbGetQuery(con,temp3)
    
    
