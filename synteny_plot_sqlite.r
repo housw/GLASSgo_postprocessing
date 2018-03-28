@@ -173,7 +173,7 @@ require(seqinr)
   #	out[[i]]<-temp
   #}
   
-  out<-list(out,   d,  s_vect)	
+  out<-list(out,   1,  1)	
   out	
 }
 
