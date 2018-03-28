@@ -876,7 +876,7 @@ read_glassgo<-function(fasta){
 
 
 require(rentrez)
-x<-read_glassgo("rybD.txt")
+x<-read_glassgo("sRNA.txt")
 ac<-export_accesions(x)  
 
 co<-export_ncRNA_coordinates(x)
