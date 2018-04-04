@@ -868,8 +868,8 @@ read_glassgo<-function(fasta){
   nam2<-grep(">",x)
   x[nam2]<-as.character(nam)
   fast<-read.fasta(fasta)
-  write.fasta(fast,file.out=paste(fasta, "_old", sep=""), names=names(fast) )
-  write.fasta(fast,file.out=fasta, names=seq(1,length(fast)))
+  #write.fasta(fast,file.out=paste(fasta, "_old", sep=""), names=names(fast) )
+  #write.fasta(fast,file.out=fasta, names=seq(1,length(fast)))
 
   x
 }
