@@ -218,6 +218,9 @@ generate_feattable<-function(idvector, genomepath=FALSE, featpath=FALSE){
 			temp_full<-gsub("\\\n *","",temp_full)
 			anfang<-grep("FEATURES   ",temp_full)
 			ende<-grep("ORIGIN   ",temp_full)
+			if(length(ende)==0){
+				ende<-length(temp_full)
+			}
 			name<-grep("VERSION  ",temp_full)
 			for(jj in 1:length(anfang)){
 			temp<-temp_full[anfang[jj]:ende[jj]]
