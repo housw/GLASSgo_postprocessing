@@ -116,7 +116,7 @@ require(seqinr)
 fasta<-read.delim(filename,header=F)[,1]
 x<-read.fasta(filename)
 nn<-grep(">",fasta)
-write.fasta(x, file.out=filename, nbchar=100000, names=fasta[nn])
+write.fasta(x, file.out=filename, nbchar=100000, names=gsub(">","",fasta[nn]))
 
 fasta<-read.delim(filename,header=F)[,1]
 	
