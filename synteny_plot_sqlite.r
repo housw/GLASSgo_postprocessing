@@ -563,7 +563,7 @@ export_ncRNA_coordinates<-function(x){ # x = copy pasted text from GLASSgo fasta
   y<-gsub("genome assembly","",y)
   y<-gsub("complete genome","",y)
   y<-gsub("chromosome","",y)
-  x<-gsub(".*\\|[:ABCDEFGHIJKLMNOPQRSTUVWXYZ:]*[:0123456789:]*\\:","",x)
+  x<-gsub(".*\\|[:ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:]*\\:","",x)
   #x<-gsub(".*\\:","",x)
   x<-gsub(" .*","", x)
   out<-matrix(,length(x),6)
@@ -862,7 +862,7 @@ read_glassgo<-function(fasta){
   x<-read.delim(fasta, header=F, sep="\t")
   nam<-grep(">",x[,1])
   nam=x[nam,1]
-  write.fasta(fast,file.out=fasta, names=names(fast),nbchar=100000 )
+  write.fasta(fast,file.out=fasta, names=gsub(">","",nam),nbchar=100000 )
   x<-read.delim(fasta, header=F, sep="\t")
   x<-as.character(x[,1])
   nam2<-grep(">",x)
