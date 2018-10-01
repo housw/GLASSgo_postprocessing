@@ -64,5 +64,5 @@ ref <- do.call(rbind, row_list)
 colnames(ref) <- c("TaxID", "full_genome_entry", "Chromosomes.RefSeq")
 #head(ref)
 
-save(ref, file = "taxid_to_refseq")
+save(ref, file = "accession_to_refseq")
 cat("Done!\n")
