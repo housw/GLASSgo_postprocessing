@@ -22,47 +22,39 @@ col_names <- c("Organism_Name", "TaxID", "BioProject_Accession", "BioProject_ID"
 colnames(genome_report) <- col_names
 cat("Done!\n")
 
-
 # ----------------------------------------------
 # Download and read in prokaryotic genome report
 # ----------------------------------------------
 
-cat("=> Preparing taxid_to_refseq lookup table ...\n")
-
-# get refseq for each taxid, return a dataframe
-get_row <- function(genome_report_row){
-  taxid <- genome_report_row$TaxID
-  replicon_str <- genome_report_row$Replicons
-  full_genome_entry <- strsplit(replicon_str, ";")[[1]][1]
-  if (grepl("chromosome", full_genome_entry)){
-    full_accession <- strsplit(full_genome_entry, ":")[[1]][2]
-    Chromosomes.RefSeq <- strsplit(full_accession, "\\/")[[1]][1]
-  } else {
-    Chromosomes.RefSeq <- "-"
-  }  
-  return(data.frame(t(c(taxid, full_genome_entry, Chromosomes.RefSeq))))
+reanno<-function(x){
+	temp<-unlist(strsplit(as.character(x["Replicons"]),split=";"))
+	temp<-gsub(".*:","",temp)
+	accession<-c()
+	refseq<-rep(NA,length(temp))
+	
+	for(i in 1:length(temp)){
+		temp2<-unlist(strsplit(temp[i],split="/"))
+		if(length(temp2)==2){
+			accession<-c(accession,temp2[2])
+			refseq[i]<-temp2[1]
+			
+		}
+		if(length(temp2)==1){
+			accession<-c(accession,temp2[1])
+			
+		}
+	}
+	out<-cbind(accession,refseq)
+	out
 }
 
-# collect all the taxid2refseq dataframes into a row_list
-row_list <- as.list(seq_len(nrow(genome_report)))
-for (i in 1:nrow(genome_report)) {
-  taxid <- genome_report[i, "TaxID"]
-  replicon_str <- genome_report[i, "Replicons"]
-  full_genome_entry <- strsplit(replicon_str, ";")[[1]][1]
-  if (grepl("chromosome", full_genome_entry)){
-    full_accession <- strsplit(full_genome_entry, ":")[[1]][2]
-    Chromosomes.RefSeq <- strsplit(full_accession, "\\/")[[1]][1]
-  } else {
-    Chromosomes.RefSeq <- "-"
-  }
-  df <- data.frame(t(c(taxid, full_genome_entry, Chromosomes.RefSeq)), stringsAsFactors = FALSE)
-  row_list[[i]] <- df
-}
+no<-which(genome_report$Replicons=="-")
+no1<-which(genome_report$Replicons=="")
 
-# merge all the taxid2refseq dataframes
-ref <- do.call(rbind, row_list)
-colnames(ref) <- c("TaxID", "full_genome_entry", "Chromosomes.RefSeq")
-#head(ref)
+no<-c(no,no1)
+genome_report<-genome_report[-no,]
+ref<-apply(genome_report,1,reanno)
+ref<-do.call(rbind,ref)
 
 save(ref, file = "accession_to_refseq")
 cat("Done!\n")
