@@ -253,11 +253,11 @@ unlink("Rplots.pdf")
 args <- commandArgs(trailingOnly = TRUE)
 
 ooi<-"NC_000913"
-wildcard<-c("NC_000913","NC_000911","NC_003197","NC_016810","NC_000964","NC_002516","NC_003210","NC_007795","NC_003047")
-max_number<-15
+wildcard<-c("NC_000913","NC_000911","NC_011740","NC_003197","NC_009792","NC_000964","NC_013716","NC_005126","NC_002516","NC_003210","NC_007795","NC_003047")
+max_number<-10
 outfile_prefix<-"sRNA"
 exclude<-c("NZ_CP009781.1","NZ_LN681227.1")
-sim<-3
+sim<-max_number
 
 for(i in 1:length(args)){
 	temp<-strsplit(args[i],"=")
@@ -343,7 +343,7 @@ if(nrow(coor2)<max_number){
 	ooi_pos<-grep(ooi, coor2[,"fin"])
 	fasta<-c()
 	if(length(ooi_pos)>0){
-		fasta<-c(paste(">",as.character(coor2[ooi_pos,"fin"],sep="")),as.character(coor2[ooi_pos,"sequence"]))
+		fasta<-c(paste(">",gsub("\\.*","",as.character(coor2[ooi_pos,"fin"])),sep=""),as.character(coor2[ooi_pos,"sequence"]))
 		coor2<-coor2[-ooi_pos,]
 	}
 	
@@ -365,10 +365,10 @@ if(nrow(coor2)>max_number){
 		pos_wild<-c(pos_wild,grep(wildcard[i],coor2[,"fin"])[1])
 	}
 	pos_wild<-unique(na.omit(pos_wild))
+	sim<-sim-length(pos_wild)
 	
 	
-	
-	max_number2<-max_number-sim-length(pos_wild)+1
+	max_number2<-max_number-sim-length(pos_wild)
 	pos<-seq(1,nrow(coor2))
 	if(length(pos_wild)>0){
 		pos<-pos[-pos_wild]
@@ -379,7 +379,7 @@ if(nrow(coor2)>max_number){
 	dis<-as.dist(dis)
 	clus<-(hclust(dis,method="average"))
 	plot(clus)
-	knum<-min(max_number2,length(clus$labels)-1)
+	knum<-min(max_number2,length(clus$tip.label)-1)
 	if(knum<2){
 		knum<-2
 	}

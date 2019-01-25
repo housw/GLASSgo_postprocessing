@@ -46,4 +46,4 @@ get_sequence<-function(coor, up=0, down=0, name="sequences", from_start=FALSE){
 
 #coor2<-coor[na.omit(inp2),]
 #coor2[,1]<-gsub("_.*","",coor2[,1])
-prom<-get_sequence(coor2,up=2000,name="prom" )
+prom<-get_sequence(coor2,up=100,down=50,name="prom" )

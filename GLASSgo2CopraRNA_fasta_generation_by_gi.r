@@ -113,8 +113,10 @@ export_ncRNA_coordinates<-function(x){ # x = copy pasted text from GLASSgo fasta
 
 
 require(seqinr)
+fasta<-read.delim(filename,header=F)[,1]
 x<-read.fasta(filename)
-write.fasta(x, file.out=filename, nbchar=100000, names=names(x))
+nn<-grep(">",fasta)
+write.fasta(x, file.out=filename, nbchar=100000, names=gsub(">","",fasta[nn]))
 
 fasta<-read.delim(filename,header=F)[,1]
 	
