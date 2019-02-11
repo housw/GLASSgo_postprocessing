@@ -20,6 +20,7 @@
 import sys
 import os
 import argparse
+from ete3 import NCBITaxa
 from collections import Counter
 from collections import OrderedDict
 
@@ -62,16 +63,15 @@ def parse_fasta(fasta_file):
         yield Fasta(header, "".join(seq))
 
 
-def get_taxid2counts_from_GLASSgo_sRNAs(GLAssgo_sRNA_file):
-    """ a sample of GLASSgo output: 
-        >HG001_02899
-        CGTATACAAGGATAAAGCTTATAACAGTAGTAATTGTTGCTATCAAACGAACAACATATATTCTATTTTCAGATAGCAA
-        >HE681097.1:c736762-736685 Staphylococcus aureus subsp. aureus HO 5096 0412 complete genome-p.c.VAL:96.25%-taxID:1074252
-        ATATACAAGGATAAAGCTTATAACAGTAGTAATTGTTGCTATCAAACGAACAACATATATTCTATTTTCAGATAGCAA
+def get_feature_tree_from_GLASSgo_sRNAs(GLAssgo_sRNA_file):
+    """
+    :param GLAssgo_sRNA_file: GLASSgo output sRNA file in fasta format
+    :param required_taxid: []
+    :return: an ete tree with features including ["sci_name", "taxid", "rank", "count"]
     """
 
+    # get taxid2counts for all leaves
     taxids = []
-
     for sRNA in parse_fasta(GLAssgo_sRNA_file):
         header = sRNA.header
         if "taxID:" in header:
@@ -80,9 +80,50 @@ def get_taxid2counts_from_GLASSgo_sRNAs(GLAssgo_sRNA_file):
             if ";" in taxid:
                 taxid = taxid.split(";")[-1]
             taxids.append(taxid)
-
     taxid2counts = dict(Counter(taxids))
-    return taxid2counts
+
+    # aggregate counts from leaves to parents
+    ncbi = NCBITaxa()
+    tree = ncbi.get_topology(taxids)
+    for leaf in tree.iter_leaves():
+        leaf.add_features(count=taxid2counts.get(leaf.name, 0))
+    for node in tree.traverse("postorder"):
+        count = 0
+        if node.is_leaf():
+            continue
+        else:
+            children = node.get_children()
+            for child in children:
+                count += child.count
+        node.add_features(count=count)
+
+    return tree
+
+
+def get_taxid2counts(ete3_feature_tree, rank=True):
+    """
+    :param ete3_feature_tree: the ete3 feature tree returned by get_feature_tree_from_GLASSgo_sRNAs
+    :param rank: only count taxids whose rank is not 'no rank'
+    :return: taxid2counts, taxid2annotation
+    """
+
+    taxid2counts = {}
+    taxid2annotations = {}
+
+    for node in ete3_feature_tree.traverse("preorder"):
+        taxid = node.taxid
+        count = node.count
+        annotation = [node.sci_name, node.rank]
+        if not rank:
+            taxid2counts[taxid] = count
+            taxid2annotations[taxid] = annotation
+        else:
+            if node.rank == 'no rank':
+                continue
+            taxid2counts[taxid] = count
+            taxid2annotations[taxid] = annotation
+
+    return taxid2counts, taxid2annotations
 
 
 def main():
@@ -90,6 +131,7 @@ def main():
     # main parser
     parser = argparse.ArgumentParser(description="plot phylogenetic distribution of GLASSgo output")
     parser.add_argument("input_GLASSgo_Dir", help="input GLASSgo output directory")
+    parser.add_argument('-r', '--rank', action='store_true', help='only calculate counts for taxids which have a taxonomy rank')
     parser.add_argument('-s', '--suffix', help="suffix of GLASSgo sRNA files [.fa]", default='.fa')
     parser.add_argument("-p", "--prefix", help="output prefix")
     parser.add_argument("-o", "--out_folder", help="output directory [./]", default="./")
@@ -108,9 +150,9 @@ def main():
     # input and output handling
     if not args.prefix:
         args.prefix = "GLASSgo_sRNA_distribution"
-        out_file = os.path.join(args.out_folder, args.prefix+".tsv")
+        output_count = os.path.join(args.out_folder, args.prefix+".tsv")
 
-    if os.path.exists(out_file):
+    if os.path.exists(output_count):
         if args.force:
             print("Warning: output file exists, will be overwritten!")
         else:
@@ -118,30 +160,28 @@ def main():
 
     input_dir = os.path.abspath(args.input_GLASSgo_Dir)
 
-    all_taxids = []
+    all_taxid2annotations = {} # {taxid1:anno1}
     sRNA_taxid2counts = OrderedDict({}) # {sRNA1:taxid2counts, sRNA2:taxid2counts}
     for sRNA in os.listdir(input_dir):
         if sRNA.endswith(args.suffix):
-            taxid2counts = get_taxid2counts_from_GLASSgo_sRNAs(os.path.join(input_dir, sRNA))
+            tree = get_feature_tree_from_GLASSgo_sRNAs(os.path.join(input_dir, sRNA))
+            taxid2counts, taxid2annotations = get_taxid2counts(tree, rank=args.rank)
+            # get taxid2count for this sRNA
             sRNA_name = sRNA.lstrip('GLASSgo_output_').rstrip(args.suffix)
-            #print(sRNA_name, taxid2counts)
+            sRNA_taxid2counts[sRNA_name] = taxid2counts
+            # update all_taxid2annotations
             for taxid in taxid2counts.keys():
-                all_taxids.append(taxid)
-            if sRNA_name not in sRNA_taxid2counts:
-                sRNA_taxid2counts[sRNA_name] = taxid2counts
-            else:
-                raise Exception("Duplicate sRNA names are found: {name}".format(name=sRNA_name))
+                if taxid not in all_taxid2annotations:
+                    all_taxid2annotations[taxid] = taxid2annotations[taxid]
 
-    with open(out_file, 'w') as oh:
-        oh.write('TaxID' + "\t" + "\t".join(sRNA_taxid2counts.keys()) + "\n")
-        for taxid in sorted(set(all_taxids)):
-            line = [taxid]
+    with open(output_count, 'w') as count_oh:
+        count_oh.write('TaxID' +"\t"+ 'sci_name' +"\t"+ 'rank' +"\t"+ "\t".join(sRNA_taxid2counts.keys()) + "\n")
+        for taxid in sorted(all_taxid2annotations.keys()):
+            count_line = [str(taxid) +"\t"+ "\t".join(all_taxid2annotations[taxid])]
             for sRNA, taxid2counts in sRNA_taxid2counts.items():
                 sRNA_count = taxid2counts.get(taxid, 0)
-                #print(taxid, sRNA, sRNA_count)
-                line.append(str(sRNA_count))
-            oh.write("\t".join(line)+"\n")
-
+                count_line.append(str(sRNA_count))
+            count_oh.write("\t".join(count_line)+"\n")
 
 if __name__ == "__main__":
     main()
