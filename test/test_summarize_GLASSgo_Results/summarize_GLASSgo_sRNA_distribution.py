@@ -84,7 +84,8 @@ def get_feature_tree_from_GLASSgo_sRNAs(GLAssgo_sRNA_file):
 
     # aggregate counts from leaves to parents
     ncbi = NCBITaxa()
-    tree = ncbi.get_topology(taxids)
+    tree = ncbi.get_topology(taxids, intermediate_nodes=True)
+    print(tree.get_ascii(attributes=["sci_name"]))
     for leaf in tree.iter_leaves():
         leaf.add_features(count=taxid2counts.get(leaf.name, 0))
     for node in tree.traverse("postorder"):

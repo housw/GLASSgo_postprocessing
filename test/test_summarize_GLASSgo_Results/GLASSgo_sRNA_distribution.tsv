@@ -1,39 +1,52 @@
-TaxID	sci_name	rank	HG001_00584	HG001_00733	HG001_01345__HG001_03252
-1239	Firmicutes	phylum	95	168	316
-1279	Staphylococcus	genus	91	162	201
-1280	Staphylococcus aureus	species	56	108	108
+TaxID	sci_name	rank	HG001_00733	HG001_00584	HG001_01345__HG001_03252
+2	Bacteria	superkingdom	168	95	316
+1239	Firmicutes	phylum	168	95	316
+1260	Finegoldia magna	species	1	0	0
+1279	Staphylococcus	genus	162	91	201
+1280	Staphylococcus aureus	species	108	56	108
 1281	Staphylococcus carnosus	species	1	1	2
 1282	Staphylococcus epidermidis	species	3	3	3
 1283	Staphylococcus haemolyticus	species	1	1	2
-1284	Staphylococcus hyicus	species	0	1	1
+1284	Staphylococcus hyicus	species	1	0	1
 1286	Staphylococcus simulans	species	1	1	2
 1288	Staphylococcus xylosus	species	4	4	8
 1290	Staphylococcus hominis	species	1	1	2
-1294	Staphylococcus muscae	species	1	0	2
-1295	Staphylococcus schleiferi	species	0	5	10
+1292	Staphylococcus warneri	species	2	1	2
+1294	Staphylococcus muscae	species	0	1	2
+1295	Staphylococcus schleiferi	species	5	0	10
 1296	Staphylococcus sciuri	species	0	0	2
-1385	Bacillales	order	0	0	312
+1385	Bacillales	order	162	91	312
 1386	Bacillus	genus	0	0	4
 1421	Lysinibacillus sphaericus	species	0	0	1
+1471	Bacillus methanolicus	species	0	0	1
 1476	Sporosarcina psychrophila	species	0	0	1
-1485	Clostridium	genus	2	0	0
-1520	Clostridium beijerinckii	species	1	0	0
+1485	Clostridium	genus	0	2	0
+1520	Clostridium beijerinckii	species	0	1	0
+1521	[Clostridium] cellulolyticum	species	0	1	0
 1569	Sporosarcina	genus	0	0	7
 1571	Sporosarcina ureae	species	0	0	4
-1578	Lactobacillus	genus	0	5	0
-1613	Lactobacillus fermentum	species	0	4	0
-1632	Lactobacillus oris	species	0	1	0
+1578	Lactobacillus	genus	5	0	1
+1613	Lactobacillus fermentum	species	4	0	0
+1632	Lactobacillus oris	species	1	0	0
 1637	Listeria	genus	0	0	91
 1638	Listeria ivanovii	species	0	0	4
 1639	Listeria monocytogenes	species	0	0	84
+1640	Listeria seeligeri	species	0	0	1
+1642	Listeria innocua	species	0	0	1
 1643	Listeria welshimeri	species	0	0	1
 28035	Staphylococcus lugdunensis	species	2	2	4
+29360	Cellulosilyticum lentocellum	species	0	0	1
 29382	Staphylococcus cohnii	species	1	1	2
+29385	Staphylococcus saprophyticus	species	2	1	2
 29388	Staphylococcus capitis	species	2	2	4
+31979	Clostridiaceae	family	0	2	0
+33958	Lactobacillaceae	family	5	0	1
+45497	[Clostridium] ultunense	species	0	1	0
 45669	Salinicoccus	genus	0	0	2
-45972	Staphylococcus pasteuri	species	1	2	2
-46170	Staphylococcus aureus subsp. aureus	subspecies	48	92	92
-61015	Staphylococcus succinus	species	1	2	2
+45972	Staphylococcus pasteuri	species	2	1	2
+46170	Staphylococcus aureus subsp. aureus	subspecies	92	48	92
+61015	Staphylococcus succinus	species	2	1	2
+68295	Thermoanaerobacterales	order	0	0	2
 69965	Macrococcus	genus	0	0	6
 69966	Macrococcus caseolyticus	species	0	0	2
 70255	Staphylococcus condimenti	species	2	2	4
@@ -41,27 +54,48 @@ TaxID	sci_name	rank	HG001_00584	HG001_00733	HG001_01345__HG001_03252
 72758	Staphylococcus capitis subsp. capitis	subspecies	1	1	2
 86664	Bacillus flexus	species	0	0	1
 89059	Lactobacillus acidipiscis	species	0	0	1
-90964	Staphylococcaceae	family	0	0	209
-91061	Bacilli	class	0	167	313
+90964	Staphylococcaceae	family	162	91	209
+91061	Bacilli	class	167	91	313
 98228	Bacillus sp. OxB-1	species	0	0	1
+129957	Carboxydothermus	genus	0	0	1
+129958	Carboxydothermus hydrogenoformans	species	0	0	1
 145391	Staphylococcus hominis subsp. hominis	subspecies	1	1	2
-155085	Staphylococcus lutrae	species	0	1	2
-186801	Clostridia	class	0	0	3
-186802	Clostridiales	order	3	0	0
+147448	Staphylococcus carnosus subsp. carnosus	subspecies	1	1	2
+147452	Staphylococcus saprophyticus subsp. saprophyticus	subspecies	2	1	2
+150022	Finegoldia	genus	1	0	0
+155085	Staphylococcus lutrae	species	1	0	2
+161154	Thermanaeromonas toyohensis	species	0	0	1
+186801	Clostridia	class	0	3	3
+186802	Clostridiales	order	0	3	1
+186803	Lachnospiraceae	family	0	0	1
 186814	Thermoanaerobacteraceae	family	0	0	2
 186817	Bacillaceae	family	0	0	5
+186818	Planococcaceae	family	0	0	7
+186820	Listeriaceae	family	0	0	91
+186826	Lactobacillales	order	5	0	1
 202751	Listeria ivanovii subsp. ivanovii	subspecies	0	0	1
 202752	Listeria ivanovii subsp. londoniensis	subspecies	0	0	2
+202949	Thermanaeromonas	genus	0	0	1
 214473	Staphylococcus nepalensis	species	2	2	4
+217159	Clostridium carboxidivorans	species	0	1	0
 246432	Staphylococcus equorum	species	3	3	6
-283734	Staphylococcus pseudintermedius	species	0	2	4
-308354	Staphylococcus simiae	species	1	2	2
+283734	Staphylococcus pseudintermedius	species	2	0	4
+300825	Bacillus lehensis	species	0	0	1
+308354	Staphylococcus simiae	species	2	1	2
+400634	Lysinibacillus	genus	0	0	1
 407035	Salinicoccus halodurans	species	0	0	1
-643214	Staphylococcus stepanovicii	species	0	1	2
-985002	Staphylococcus argenteus	species	4	8	12
-985762	Staphylococcus agnetis	species	0	1	1
+541000	Ruminococcaceae	family	0	1	0
+643214	Staphylococcus stepanovicii	species	1	0	2
+698776	Cellulosilyticum	genus	0	0	1
+985002	Staphylococcus argenteus	species	8	4	12
+985762	Staphylococcus agnetis	species	1	0	1
 1437774	Salinicoccus sp. BAB 3246	species	0	0	1
+1508657	Ruminiclostridium	genus	0	1	0
+1570339	Peptoniphilaceae	family	1	0	0
 1715860	Staphylococcus sp. AntiMn-1	species	1	1	2
+1737404	Tissierellia	class	1	1	0
+1737405	Tissierellales	order	1	1	0
+1737406	Tissierellaceae	family	0	1	0
 1855823	Macrococcus canis	species	0	0	2
 1898474	Macrococcus sp. IME1552	species	0	0	2
 1930546	Sporosarcina sp. P37	species	0	0	1

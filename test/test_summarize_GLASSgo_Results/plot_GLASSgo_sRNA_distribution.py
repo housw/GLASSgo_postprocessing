@@ -156,7 +156,7 @@ def main():
     # 
     from ete3 import NCBITaxa
     ncbi = NCBITaxa()
-    tree = ncbi.get_topology(taxids)
+    tree = ncbi.get_topology(taxids, intermediate_nodes=True)
 
     for leaf in tree.iter_leaves():
         leaf.add_features(count=taxa2count.get(leaf.name, 0))
